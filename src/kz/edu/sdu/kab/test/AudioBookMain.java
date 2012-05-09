@@ -10,8 +10,9 @@ public class AudioBookMain {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		AudioBook audioBook = new AudioBook();
-		System.out.println(audioBook.makeWAV("болды"));
-		audioBook.play("1540749980");
+
+		audioBook.playWAV(audioBook.makeWAV("болды"));
+//		audioBook.playMP3("1540749980");
 	}
 
 }

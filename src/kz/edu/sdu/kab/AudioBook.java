@@ -94,11 +94,11 @@ public class AudioBook {
 		return null;
 	}
 	
-	public void play() {
-		play(audioFileName);
+	public void playMP3() {
+		playMP3(audioFileName);
 	}
 	
-	public void play(String fileName) {
+	public void playMP3(String fileName) {
 		try {
 			audioPlayer = new AudioPlayer();
 			audioPlayer.play(fileName);
@@ -106,6 +106,21 @@ public class AudioBook {
 			e.printStackTrace();
 		}
 	}
+	
+	public void playWAV() {
+		playWAV(audioFileName);
+	}
+	
+	public void playWAV(String fileName) {
+		try {
+			audioPlayer = new AudioPlayer();
+			audioPlayer.playWAV(fileName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	
 	public void stop() {
 		try {

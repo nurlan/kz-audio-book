@@ -8,10 +8,15 @@ import javax.media.MediaLocator;
 import javax.media.Player;
 import javax.media.PlugInManager;
 import javax.media.format.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class AudioPlayer {
 
 	private Player player;
+	
+	private Clip clip;
 	
 	public AudioPlayer() {
 		
@@ -37,9 +42,26 @@ public class AudioPlayer {
 		}
 	}
 	
+	public void playWAV(String fileName) {
+		try {
+			AudioInputStream wavFile = AudioSystem.getAudioInputStream(new File("/Users/nurlan/Dev/tests/folders/audiobooks/"+fileName+".wav"));
+			clip = AudioSystem.getClip();
+			clip.open(wavFile);
+			clip.start();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void stop() {
 		try {
-			player.stop();
+			if ( player != null) {
+				player.stop();
+			}
+			if (clip != null) {
+				clip.stop();
+			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
