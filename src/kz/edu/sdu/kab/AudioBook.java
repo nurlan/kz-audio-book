@@ -52,7 +52,10 @@ public class AudioBook {
 			Map<String, String> syllableMap = audioMaker.getSyllableFileMap("mp3");
 			List<String> pathList = new ArrayList<String>();
 			for(Syllable syllable : syllableList) {
-				if( syllableMap.containsKey(syllable.getChunk()+".mp3") ) {
+				if( syllable.getPosition().equals(Syllable.Position.LAST) && syllableMap.containsKey(syllable.getChunk()+"_.mp3") ) {
+					pathList.add(syllableMap.get(syllable.getChunk()+"_.mp3"));
+				}
+				else if( syllableMap.containsKey(syllable.getChunk()+".mp3") ) {
 					pathList.add(syllableMap.get(syllable.getChunk()+".mp3"));
 				}
 				else {
@@ -76,7 +79,10 @@ public class AudioBook {
 			Map<String, String> syllableMap = audioMaker.getSyllableFileMap("wav");
 			List<String> pathList = new ArrayList<String>();
 			for(Syllable syllable : syllableList) {
-				if( syllableMap.containsKey(syllable.getChunk()+".wav") ) {
+				if( syllable.getPosition().equals(Syllable.Position.LAST) && syllableMap.containsKey(syllable.getChunk()+"_.wav") ) {
+					pathList.add(syllableMap.get(syllable.getChunk()+"_.wav"));
+				}
+				else if( syllableMap.containsKey(syllable.getChunk()+".wav") ) {
 					pathList.add(syllableMap.get(syllable.getChunk()+".wav"));
 				}
 				else {

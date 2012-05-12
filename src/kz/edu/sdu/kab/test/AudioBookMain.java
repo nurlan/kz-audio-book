@@ -11,7 +11,7 @@ public class AudioBookMain {
 		// TODO Auto-generated method stub
 		AudioBook audioBook = new AudioBook();
 
-		audioBook.playWAV(audioBook.makeWAV("болды"));
+		audioBook.playWAV(audioBook.makeWAV("Өнер айтыс секілді қазақ өзіндік негізгі"));
 //		audioBook.playMP3("1540749980");
 	}
 
