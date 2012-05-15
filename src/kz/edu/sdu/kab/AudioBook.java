@@ -45,51 +45,29 @@ public class AudioBook {
 		return syllableList;
 	}
 	
-	public String makeMP3(String text) {
+	public String make(String text, String extension) {
 		try {
 			List<Syllable> syllableList = getSyllableList(text);
 			audioFileName = ""+syllableList.hashCode();
-			Map<String, String> syllableMap = audioMaker.getSyllableFileMap("mp3");
+			Map<String, String> syllableMap = audioMaker.getSyllableFileMap(extension);
 			List<String> pathList = new ArrayList<String>();
 			for(Syllable syllable : syllableList) {
-				if( syllable.getPosition().equals(Syllable.Position.LAST) && syllableMap.containsKey(syllable.getChunk()+"_.mp3") ) {
-					pathList.add(syllableMap.get(syllable.getChunk()+"_.mp3"));
+				if( syllable.getPosition().equals(Syllable.Position.LAST) && syllableMap.containsKey(syllable.getChunk()+"_."+extension) ) {
+					pathList.add(syllableMap.get(syllable.getChunk()+"_."+extension));
 				}
-				else if( syllableMap.containsKey(syllable.getChunk()+".mp3") ) {
-					pathList.add(syllableMap.get(syllable.getChunk()+".mp3"));
+				else if( syllableMap.containsKey(syllable.getChunk()+"."+extension) ) {
+					pathList.add(syllableMap.get(syllable.getChunk()+"."+extension));
 				}
 				else {
 					System.out.println("Syllable not found Exception.");
 				}
 			}
-			audioMaker.makeMP3(pathList, audioFileName);
-			return audioFileName;
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		return null;
-	}
-	
-	public String makeWAV(String text) {
-		try {
-			List<Syllable> syllableList = getSyllableList(text);
-			audioFileName = ""+syllableList.hashCode();
-			Map<String, String> syllableMap = audioMaker.getSyllableFileMap("wav");
-			List<String> pathList = new ArrayList<String>();
-			for(Syllable syllable : syllableList) {
-				if( syllable.getPosition().equals(Syllable.Position.LAST) && syllableMap.containsKey(syllable.getChunk()+"_.wav") ) {
-					pathList.add(syllableMap.get(syllable.getChunk()+"_.wav"));
-				}
-				else if( syllableMap.containsKey(syllable.getChunk()+".wav") ) {
-					pathList.add(syllableMap.get(syllable.getChunk()+".wav"));
-				}
-				else {
-					System.out.println("Syllable not found Exception.");
-				}
+			if(extension.equals("mp3")) {
+				audioMaker.makeMP3(pathList, audioFileName);
 			}
-			audioMaker.makeWAV(pathList, audioFileName);
+			else if(extension.equals("wav")) {
+				audioMaker.makeWAV(pathList, audioFileName);
+			}
 			
 			return audioFileName;
 		}

@@ -12,10 +12,13 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
+import kz.edu.sdu.kab.config.XmlAudioBookConfig;
+
 public class AudioPlayer {
 
-	private Player player;
+	private XmlAudioBookConfig xmlAudioBookConfig;
 	
+	private Player player;
 	private Clip clip;
 	
 	public AudioPlayer() {
@@ -33,7 +36,7 @@ public class AudioPlayer {
 			PlugInManager.CODEC
 		);
 		try{
-			player = Manager.createPlayer(new MediaLocator(new File("/Users/nurlan/Dev/tests/folders/audiobooks/"+fileName+".mp3").toURI().toURL()));
+			player = Manager.createPlayer(new MediaLocator(new File(xmlAudioBookConfig.getAudiobooksPath()+fileName+".mp3").toURI().toURL()));
 			player.start();
 			System.out.println(player.getStopTime().getNanoseconds());
 		}
@@ -44,7 +47,7 @@ public class AudioPlayer {
 	
 	public void playWAV(String fileName) {
 		try {
-			AudioInputStream wavFile = AudioSystem.getAudioInputStream(new File("/Users/nurlan/Dev/tests/folders/audiobooks/"+fileName+".wav"));
+			AudioInputStream wavFile = AudioSystem.getAudioInputStream(new File(xmlAudioBookConfig.getAudiobooksPath()+fileName+".wav"));
 			clip = AudioSystem.getClip();
 			clip.open(wavFile);
 			clip.start();

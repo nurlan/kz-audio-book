@@ -13,15 +13,19 @@ import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
+import kz.edu.sdu.kab.config.XmlAudioBookConfig;
+
 public class AudioMaker {
 
+	private XmlAudioBookConfig xmlAudioBookConfig;
+	
 	private ProcessBuilder processBuilder;
 	private Map<String, String> syllableFileMap;
 	
 	public AudioMaker() {
 		try {
 			processBuilder = new ProcessBuilder("./collectAudioBook.sh");
-			processBuilder.directory(new File("/Users/nurlan/Dev/tests/folders/"));
+			processBuilder.directory(new File(xmlAudioBookConfig.getBashscriptPath()));
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -30,7 +34,7 @@ public class AudioMaker {
 	
 	public Map<String, String> getSyllableFileMap(String extension) {
 		try {
-			File folder = new File("/Users/nurlan/Dev/tests/folders/syllables/"+extension);
+			File folder = new File(xmlAudioBookConfig.getSyllablesPath()+extension);
 			File[] fileArray = folder.listFiles();
 	
 			syllableFileMap = new HashMap<String, String>();
@@ -67,11 +71,11 @@ public class AudioMaker {
 				script.append("cat $i >> audiobooks/"+fileName+".mp3\n");
 				script.append("done\n");
 				
-				Writer output = new BufferedWriter(new FileWriter("/Users/nurlan/Dev/tests/folders/collectAudioBook.sh"));
+				Writer output = new BufferedWriter(new FileWriter(xmlAudioBookConfig.getBashscriptPath()+"collectAudioBook.sh"));
 				output.write(script.toString());
 				output.close();
 				
-				Runtime.getRuntime().exec("chmod u+x /Users/nurlan/Dev/tests/folders/collectAudioBook.sh");
+				Runtime.getRuntime().exec("chmod u+x "+xmlAudioBookConfig.getBashscriptPath()+"collectAudioBook.sh");
 				
 				processBuilder.start();
 
@@ -90,7 +94,7 @@ public class AudioMaker {
 					AudioInputStream appendedFiles = AudioSystem.getAudioInputStream(new File(pathList.get(0)));
 					AudioSystem.write(appendedFiles, 
 	                        AudioFileFormat.Type.WAVE, 
-	                        new File("/Users/nurlan/Dev/tests/folders/audiobooks/"+fileName+".wav"));
+	                        new File(xmlAudioBookConfig.getAudiobooksPath()+fileName+".wav"));
 				}
 				else if(pathList.size() > 1){
 					AudioInputStream appendedFiles = AudioSystem.getAudioInputStream(new File(pathList.get(0)));
@@ -105,7 +109,7 @@ public class AudioMaker {
 					}
 	                AudioSystem.write(appendedFiles, 
 	                        AudioFileFormat.Type.WAVE, 
-	                        new File("/Users/nurlan/Dev/tests/folders/audiobooks/"+fileName+".wav"));
+	                        new File(xmlAudioBookConfig.getAudiobooksPath()+fileName+".wav"));
 				}
 				
 				System.out.println("finished wav");
