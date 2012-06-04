@@ -27,4 +27,25 @@ public class MicrosoftWord {
 		
 		return null;
 	}
+	
+	public String getHtmlContentText(FileInputStream fis) {
+		try {
+			HWPFDocument document = new HWPFDocument(fis);
+			WordExtractor extractor = new WordExtractor(document);
+			String[] fileData = extractor.getParagraphText();
+			String contentText = "";
+			for (int i = 0; i < fileData.length; i++) {
+				if (fileData[i] != null) {
+					contentText += fileData[i] + "</br>";
+				}
+			}
+			
+			return contentText;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 }

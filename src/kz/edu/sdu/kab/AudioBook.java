@@ -108,7 +108,9 @@ public class AudioBook {
 	
 	public void stop() {
 		try {
-			audioPlayer.stop();
+			if(audioPlayer != null) {
+				audioPlayer.stop();
+			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();

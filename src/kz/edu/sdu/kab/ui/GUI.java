@@ -1,8 +1,13 @@
 package kz.edu.sdu.kab.ui;
 
+import kz.edu.sdu.kab.AudioBook;
+import kz.edu.sdu.kab.config.XmlAudioBookConfig;
 import kz.edu.sdu.kab.parser.Parser;
 
+import com.trolltech.qt.core.QByteArray;
 import com.trolltech.qt.core.QDir;
+import com.trolltech.qt.core.QTextCodec;
+import com.trolltech.qt.core.QUrl;
 import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QFileDialog;
@@ -10,6 +15,7 @@ import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QMainWindow;
 import com.trolltech.qt.gui.QMenu;
 import com.trolltech.qt.gui.QMessageBox;
+import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
 import com.trolltech.qt.webkit.QWebView;
@@ -24,22 +30,33 @@ public class GUI extends QMainWindow {
 	private QAction aboutAct;
 	private QAction aboutQtJambiAct;
 
-	private QWidget centerWidget;
-
 	private QVBoxLayout mainLayout;
 	private QHBoxLayout topLayout;
 	private QVBoxLayout centerLayout;
 	private QHBoxLayout bottomLayout;
 
 	private QWebView webView;
-
+	
+	private QWidget centerWidget;
+	private QPushButton playButton;
+	private QPushButton stopButton;
+	private QPushButton generateButton;
+	
+	private XmlAudioBookConfig audioBookConfig;
 	private Parser parser;
-
+	private AudioBook audioBook;
+	
+	private String content;
+	private String audioFileName;
+	
 	public GUI(QWidget parent) {
 		super(parent);
 		createActions();
 		createMenus();
 		createUI();
+		
+		audioBookConfig = new XmlAudioBookConfig();
+		audioBook = new AudioBook();
 	}
 
 	private void createMenus() {
@@ -86,12 +103,33 @@ public class GUI extends QMainWindow {
 		mainLayout.addLayout(topLayout);
 		mainLayout.addLayout(centerLayout);
 		mainLayout.addLayout(bottomLayout);
-
+	    
+		QHBoxLayout controlLayout = new QHBoxLayout();
+		
+		playButton = new QPushButton(tr("play"));
+		stopButton = new QPushButton(tr("stop"));
+		generateButton = new QPushButton(tr("generate"));
+		
+		playButton.setToolTip(tr("Play"));
+		stopButton.setToolTip(tr("Stop"));
+		generateButton.setToolTip(tr("Text processing"));
+		
+		controlLayout.addWidget(generateButton);
+		controlLayout.addStretch();
+		controlLayout.addWidget(playButton);
+		controlLayout.addWidget(stopButton);
+		
+		topLayout.addLayout(controlLayout);
+		
 		webView = new QWebView();
-		webView.setHtml("Html text!");
-
+		
 		centerLayout.addWidget(webView);
 		resize(800, 500);
+		
+		//signals
+		playButton.clicked.connect(this, "play()");
+		stopButton.clicked.connect(this, "stop()");
+		generateButton.clicked.connect(this, "generate()");
 	}
 
 	protected void open() {
@@ -100,8 +138,37 @@ public class GUI extends QMainWindow {
 				tr("Documents(*.doc *.docx);;PDF(*.pdf)")));
 		if (path.length() != 0) {
 			parser = new Parser();
-			String content = parser.getFileContent(path);
-			webView.setHtml(content);
+			content = parser.getFileContent(path);
+			String htmlContent = parser.getFileHtmlContent(path);
+			
+			webView.setHtml(htmlContent);
+		}
+	}
+	
+	protected void generate() {
+		if(content != null && content.length() != 0) {
+			audioFileName = audioBook.make(content,"wav");
+		}
+		else {
+			QMessageBox.warning(this, "Warning", "In order to text processing, you should choose some file with kazakh text");
+		}
+	}
+	
+	protected void play() {
+		if(content != null && content.length() != 0) {
+			if( audioFileName == null) {
+				audioFileName = audioBook.make(content, "wav");
+			}
+			audioBook.playWAV(audioFileName);
+		}
+		else {
+			QMessageBox.warning(this, "Warning", "In order to play, you should choose some file with kazakh text");
+		}
+	}
+	
+	protected void stop() {
+		if(audioBook != null) {
+			audioBook.stop();
 		}
 	}
 
@@ -113,7 +180,7 @@ public class GUI extends QMainWindow {
 		QApplication.initialize(args);
 
 		GUI aui = new GUI(null);
-		aui.setWindowTitle("KZ Audio book");
+		aui.setWindowTitle("Қазақша Audio book");
 		aui.show();
 
 		QApplication.exec();

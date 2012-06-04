@@ -25,4 +25,23 @@ public class PDF {
 		
 		return null;
 	}
+	
+	public String getHtmlContentText(FileInputStream fis) {
+		try {
+			String contentText = "";
+			PdfReader pdf = new PdfReader(fis);
+			PdfTextExtractor pte = new PdfTextExtractor(pdf);
+			
+			for(int i = 1; i <= pdf.getNumberOfPages();i++) {
+				contentText += pte.getTextFromPage(i) + "</br>";
+			}
+			
+			return contentText;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <audioBookConfig>
-	<audiobooks>/Users/nurlan/Dev/tests/folders/audiobooks/</audiobooks>
-	<syllables>/Users/nurlan/Dev/tests/folders/syllables/</syllables>
-	<bashscript>/Users/nurlan/Dev/tests/folders/</bashscript>
+	<audiobooks>/home/nurlan/Dev/folders/audiobooks/</audiobooks>
+	<syllables>/home/nurlan/Dev/folders/syllables/</syllables>
+	<bashscript>/home/nurlan/Dev/folders/</bashscript>
 </audioBookConfig>
