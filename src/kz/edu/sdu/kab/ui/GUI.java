@@ -173,6 +173,10 @@ public class GUI extends QMainWindow {
 		QMessageBox.information(this, "Info", "It's your turn now :-)");
 	}
 
+	public AudioBook getAudioBook() {
+		return audioBook;
+	}
+
 	public static void main(String[] args) {
 		QApplication.initialize(args);
 

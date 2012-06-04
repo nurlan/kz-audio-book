@@ -56,6 +56,17 @@ public class AudioPlayer {
 			e.printStackTrace();
 		}
 	}
+	
+	public boolean isPlaying() {
+		try {
+			return clip.isRunning();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
 
 	public void stop() {
 		try {

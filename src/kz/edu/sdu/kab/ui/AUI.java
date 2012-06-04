@@ -62,7 +62,8 @@ public class AUI implements Runnable {
 	                String resultText = result.getBestFinalResultNoFiller();
 	                System.out.println("You said: " + resultText + '\n');
 	                if(resultText.equals("okhy")) {
-	                	gui.play();
+	                	if(!gui.getAudioBook().isPlaying())
+	                		gui.play();
 	                }
 	                else if(resultText.equals("tokhta")) {
 	                	gui.stop();

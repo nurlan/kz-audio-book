@@ -104,7 +104,16 @@ public class AudioBook {
 		}
 	}
 	
-	
+	public boolean isPlaying() {
+		try {
+			return audioPlayer.isPlaying();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
 	
 	public void stop() {
 		try {
