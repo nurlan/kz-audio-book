@@ -4,10 +4,7 @@ import kz.edu.sdu.kab.AudioBook;
 import kz.edu.sdu.kab.config.XmlAudioBookConfig;
 import kz.edu.sdu.kab.parser.Parser;
 
-import com.trolltech.qt.core.QByteArray;
 import com.trolltech.qt.core.QDir;
-import com.trolltech.qt.core.QTextCodec;
-import com.trolltech.qt.core.QUrl;
 import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QFileDialog;
@@ -179,10 +176,13 @@ public class GUI extends QMainWindow {
 	public static void main(String[] args) {
 		QApplication.initialize(args);
 
-		GUI aui = new GUI(null);
-		aui.setWindowTitle("Қазақша Audio book");
-		aui.show();
+		GUI gui = new GUI(null);
+		gui.setWindowTitle("Қазақша Audio book");
+		gui.show();
 
+		Thread t = new Thread(new AUI(gui));
+		t.start();
+		
 		QApplication.exec();
 	}
 }
